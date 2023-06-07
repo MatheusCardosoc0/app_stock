@@ -1,12 +1,25 @@
-import React from 'react'
-import { MenuIcon } from 'lucide-react'
+'use client'
+
+import { MenuIcon, MoveLeft } from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 const Menu = () => {
+  const path = usePathname()
+
   return (
     <>
-      <button>
-        <MenuIcon className="h-8 w-8" />
-      </button>
+      {path.includes('form') && (
+        <Link href={'/'}>
+          <MoveLeft className="h-8 w-8" />
+        </Link>
+      )}
+
+      {!path.includes('form') && (
+        <button>
+          <MenuIcon className="h-8 w-8" />
+        </button>
+      )}
     </>
   )
 }

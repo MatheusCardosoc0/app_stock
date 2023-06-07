@@ -11,18 +11,18 @@ const Footer = () => {
         w-full
         justify-around
         bg-gradient-to-tr
-        from-red-500
-        via-red-400
-        to-red-700
-        py-4
+        from-red-700
+        via-red-600
+        to-red-800
+        py-2
         text-white
       "
     >
       <Link href={'/'}>
-        <Package2 className="h-12 w-12" />
+        <Package2 className="h-8 w-8" />
       </Link>
       <Link href={'/stock'}>
-        <Boxes className="h-12 w-12" />
+        <Boxes className="h-8 w-8" />
       </Link>
     </footer>
   )

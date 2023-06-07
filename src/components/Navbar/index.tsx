@@ -15,9 +15,9 @@ const Navbar = () => {
         w-full
         justify-between
         bg-gradient-to-tr
-        from-red-500
-        via-red-400
-        to-red-700
+        from-red-700
+        via-red-600
+        to-red-800
         px-6
         py-3
         text-white
@@ -30,7 +30,7 @@ const Navbar = () => {
           width={120}
           height={120}
           alt="Logo"
-          className="h-16 w-16"
+          className="h-12 w-12"
         />
       </div>
 

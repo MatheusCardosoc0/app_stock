@@ -1,5 +1,6 @@
 import { ProductProps } from '@/@types/product'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 interface CardProductProps {
@@ -7,17 +8,38 @@ interface CardProductProps {
 }
 
 const CardProduct: React.FC<CardProductProps> = ({ product }) => {
+  function truncateProductName(name: string): string {
+    if (name.length > 20) {
+      return name.slice(0, 20) + '...'
+    }
+    return name
+  }
+
   return (
-    <div className="rounded-lg bg-neutral-50 p-4 drop-shadow-[0px_0px_1px_black]">
+    <Link
+      href={`/detail/product/${product.id}`}
+      className="
+        w-[90%]
+        max-w-[300px] 
+        cursor-pointer 
+        rounded-lg 
+        bg-neutral-50 
+        p-4 
+        drop-shadow-[0px_0px_1px_black] 
+        transition-all
+        duration-500
+        hover:scale-110
+      "
+    >
       <Image
         src={product.image}
         width={520}
         height={320}
-        className="h-60 w-60"
+        className="h-60 w-full"
         alt="product"
       />
-      <span>{product.name}</span>
-    </div>
+      <span>{truncateProductName(product.name)}</span>
+    </Link>
   )
 }
 

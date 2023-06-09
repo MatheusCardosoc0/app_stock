@@ -21,7 +21,7 @@ const Footer = () => {
       <Link href={'/'}>
         <Package2 className="h-8 w-8" />
       </Link>
-      <Link href={'/stock'}>
+      <Link href={'/shelf'}>
         <Boxes className="h-8 w-8" />
       </Link>
     </footer>

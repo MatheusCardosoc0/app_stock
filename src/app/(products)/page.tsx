@@ -1,16 +1,12 @@
 import { ProductProps } from '@/@types/product'
 import CardProduct from '@/components/CardProduct'
 import NavFormButton from '@/components/NavFormButton'
+import { api } from '@/libs/axiosConfig'
 
 export default async function Home() {
-  const response = await fetch('http://localhost:3333/product', {
-    method: 'GET',
-    next: {
-      revalidate: 0.1,
-    },
-  })
+  const response = await api('/product')
 
-  const products = await response.json()
+  const products = await response.data
 
   return (
     <main
@@ -18,7 +14,7 @@ export default async function Home() {
         relative
         mx-auto
         flex
-        w-[90%]
+        w-full
         flex-col
         flex-wrap
         items-center
@@ -26,6 +22,7 @@ export default async function Home() {
         gap-12
         pb-60
         pt-40
+        md:w-[90%]
         md:flex-row
         md:justify-start
       "

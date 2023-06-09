@@ -9,13 +9,11 @@ const Menu = () => {
 
   return (
     <>
-      {path.includes('form') && (
+      {path.includes('form') || path.includes('detail') ? (
         <Link href={'/'}>
           <MoveLeft className="h-8 w-8" />
         </Link>
-      )}
-
-      {!path.includes('form') && (
+      ) : (
         <button>
           <MenuIcon className="h-8 w-8" />
         </button>

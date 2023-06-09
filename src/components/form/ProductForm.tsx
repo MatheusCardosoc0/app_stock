@@ -7,6 +7,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { api } from '@/libs/axiosConfig'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
+import { Camera } from 'lucide-react'
 
 const schema = z.object({
   name: z.string().min(1, 'Insira um nome para o produto'),
@@ -18,7 +20,9 @@ const schema = z.object({
 type formProps = z.infer<typeof schema>
 
 const ProductForm = () => {
-  const [image, setImage] = useState<any>(null)
+  const [image, setImage] = useState<string | Blob>('')
+  const [currentImageUrl, setCurrentImageUrl] = useState('')
+
   const {
     handleSubmit,
     formState: { errors },
@@ -58,18 +62,17 @@ const ProductForm = () => {
       const fileSize = file.size / 1024 / 1024 // Tamanho do arquivo em MB
 
       if (fileSize <= 2) {
-        const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i // Tipos de extensões permitidas
+        const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i
 
         if (allowedExtensions.test(file.name)) {
           setImage(file)
+          setCurrentImageUrl(URL.createObjectURL(file))
         } else {
-          // Extensão inválida
           console.log(
             'Extensão de arquivo inválida. Apenas arquivos JPG e PNG são permitidos.',
           )
         }
       } else {
-        // Tamanho de arquivo inválido
         console.log(
           'Tamanho de arquivo inválido. O tamanho máximo permitido é de 2MB.',
         )
@@ -104,13 +107,57 @@ const ProductForm = () => {
           {...register('name')}
         />
         {errors.name && <p>{errors.name?.message}</p>}
+
         <span>Imagem*</span>
-        <input
-          className={`${basicInputStyle}`}
-          type="file"
-          accept=".jpg,.png,.jpeg"
-          onChange={handleFileUpload}
-        />
+        <div
+          className="
+            relative
+            mx-auto
+            h-32
+            w-[90%]
+            overflow-hidden
+            rounded-lg
+            bg-black
+          "
+        >
+          <input
+            id="fileInput"
+            className={`hidden h-full w-full outline-none`}
+            type="file"
+            accept=".jpg,.png,.jpeg"
+            onChange={handleFileUpload}
+          />
+
+          <label htmlFor="fileInput">
+            <Camera
+              className="
+                absolute 
+                left-1/2 
+                top-1/2 
+                z-30 
+                h-20 
+                w-20 
+                -translate-x-1/2 
+                -translate-y-1/2 
+                cursor-pointer
+                text-white
+                transition-all
+                duration-500
+                hover:scale-150
+              "
+            />
+          </label>
+
+          {currentImageUrl && (
+            <Image
+              src={currentImageUrl}
+              alt="current image"
+              width={520}
+              height={320}
+              className="absolute z-10"
+            />
+          )}
+        </div>
         <span>Descrição*</span>
         <input
           className={`${basicInputStyle}`}

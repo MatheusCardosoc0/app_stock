@@ -1,26 +1,38 @@
 import { ShelfProps } from '@/@types/shelf'
 import Image from 'next/image'
+import ControlQuantityButtons from './ControlQuantityButtons'
+import Link from 'next/link'
 
 interface CardShelfProps {
   shelf: ShelfProps
 }
 
 const CardShelf: React.FC<CardShelfProps> = ({ shelf }) => {
+  function truncateProductName(name: string): string {
+    if (name.length > 20) {
+      return name.slice(0, 20) + '...'
+    }
+    return name
+  }
+
   return (
     <div className="flex w-full justify-between bg-neutral-50 p-2 drop-shadow-[0px_0px_1px_black]">
       <div
         className="
           flex
           items-center
+          gap-3
         "
       >
-        <Image
-          src={shelf.Product.image}
-          width={520}
-          height={320}
-          className="h-20 w-20"
-          alt="product image"
-        />
+        <Link href={`/detail/product/${shelf.Product.id}`}>
+          <Image
+            src={shelf.Product.image}
+            width={520}
+            height={320}
+            className="h-20 w-20"
+            alt="product image"
+          />
+        </Link>
         <div
           className="
             flex
@@ -31,7 +43,7 @@ const CardShelf: React.FC<CardShelfProps> = ({ shelf }) => {
             text-zinc-600
           "
         >
-          <span>{shelf.Product.name}</span>
+          <span>{truncateProductName(shelf.Product.name)}</span>
           <span>{shelf.maturity}</span>
         </div>
       </div>
@@ -39,14 +51,15 @@ const CardShelf: React.FC<CardShelfProps> = ({ shelf }) => {
         className="
           flex
           flex-col
+          items-center
           gap-4
           text-2xl
           font-bold
           text-zinc-600
         "
       >
-        <button>{shelf.Quantity}</button>
-        <button>+</button>
+        <span>{shelf.Quantity}</span>
+        <ControlQuantityButtons shelf={shelf} />
       </div>
     </div>
   )

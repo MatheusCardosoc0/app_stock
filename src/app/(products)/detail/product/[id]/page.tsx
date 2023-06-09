@@ -1,4 +1,5 @@
 import { ProductProps } from '@/@types/product'
+import ControlQuantityButtons from '@/components/ControlQuantityButtons'
 import { api } from '@/libs/axiosConfig'
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
@@ -11,6 +12,13 @@ type Params = {
 
 export default async function ProductPageDetail({ params }: Params) {
   const response = await api(`/product/${params.id}`)
+
+  function truncateProductName(name: string): string {
+    if (name.length > 10) {
+      return name.slice(0, 10) + '...'
+    }
+    return name
+  }
 
   if (!response.data) {
     redirect('/')
@@ -57,8 +65,12 @@ export default async function ProductPageDetail({ params }: Params) {
                 key={shelf.id}
                 className="flex items-center justify-between border-2"
               >
-                <td className="w-[23.5%] border-2">{shelf.Product.name}</td>
-                <td className="w-[23.5%] border-2">{shelf.Quantity}</td>
+                <td className="w-[23.5%] border-2">
+                  {truncateProductName(shelf.Product.name)}
+                </td>
+                <td className="flex w-[23.5%] items-center justify-between border-2 px-1">
+                  {shelf.Quantity} <ControlQuantityButtons shelf={shelf} />
+                </td>
                 <td className="w-[23.5%] border-2">{shelf.maturity}</td>
                 <td className="w-[23.5%] border-2">
                   <Image

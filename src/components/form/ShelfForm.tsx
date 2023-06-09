@@ -4,11 +4,8 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import { useState } from 'react'
 import { api } from '@/libs/axiosConfig'
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
-import { Camera } from 'lucide-react'
 import { ProductProps } from '@/@types/product'
 
 const schema = z.object({
@@ -32,9 +29,6 @@ interface ShelfFormProps {
 type formProps = z.infer<typeof schema>
 
 const ShelfForm: React.FC<ShelfFormProps> = ({ products }) => {
-  const [image, setImage] = useState<string | Blob>('')
-  const [currentImageUrl, setCurrentImageUrl] = useState('')
-
   const {
     handleSubmit,
     formState: { errors },

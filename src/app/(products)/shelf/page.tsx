@@ -12,6 +12,7 @@ export default async function StockPage() {
   return (
     <main
       className="
+        mb-40
         mt-40
         flex
         flex-col

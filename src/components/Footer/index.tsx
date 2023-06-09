@@ -19,10 +19,10 @@ const Footer = () => {
       "
     >
       <Link href={'/'}>
-        <Package2 className="h-8 w-8" />
+        <Package2 className="h-8 w-8 hover:scale-125" />
       </Link>
       <Link href={'/shelf'}>
-        <Boxes className="h-8 w-8" />
+        <Boxes className="h-8 w-8 hover:scale-125" />
       </Link>
     </footer>
   )

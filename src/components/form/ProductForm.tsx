@@ -4,47 +4,52 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { api } from '@/libs/axiosConfig'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { Camera } from 'lucide-react'
+import { CldUploadWidget } from 'next-cloudinary'
+import result from 'postcss/lib/result'
+import ImageUpload from '../ImageUpload'
 
 const schema = z.object({
   name: z.string().min(1, 'Insira um nome para o produto'),
   description: z
     .string()
     .min(12, 'A descrição deve conter mais de 12 palavras'),
+  image: z.string(),
 })
 
 type formProps = z.infer<typeof schema>
 
 const ProductForm = () => {
-  const [image, setImage] = useState<string | Blob>('')
-  const [currentImageUrl, setCurrentImageUrl] = useState('')
-
   const {
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
     register,
   } = useForm<formProps>({
     resolver: zodResolver(schema),
     reValidateMode: 'onChange',
     mode: 'all',
+    defaultValues: {
+      description: '',
+      image: '',
+      name: '',
+    },
   })
+
+  const image = watch('image')
 
   const router = useRouter()
 
   const basicInputStyle = 'border-[0.1px] p-2 border-black'
 
   async function onSubmit(data: formProps) {
-    const formData = new FormData()
-    formData.append('name', data.name)
-    formData.append('image', image)
-    formData.append('description', data.description)
-
     try {
-      await api.post('/product', formData)
+      await api.post('/product', data)
 
       alert('success')
       router.push('/')
@@ -52,31 +57,6 @@ const ProductForm = () => {
     } catch (error) {
       console.log(error)
       alert('error')
-    }
-  }
-
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0]
-
-    if (file) {
-      const fileSize = file.size / 1024 / 1024 // Tamanho do arquivo em MB
-
-      if (fileSize <= 2) {
-        const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i
-
-        if (allowedExtensions.test(file.name)) {
-          setImage(file)
-          setCurrentImageUrl(URL.createObjectURL(file))
-        } else {
-          console.log(
-            'Extensão de arquivo inválida. Apenas arquivos JPG e PNG são permitidos.',
-          )
-        }
-      } else {
-        console.log(
-          'Tamanho de arquivo inválido. O tamanho máximo permitido é de 2MB.',
-        )
-      }
     }
   }
 
@@ -109,55 +89,10 @@ const ProductForm = () => {
         {errors.name && <p>{errors.name?.message}</p>}
 
         <span>Imagem*</span>
-        <div
-          className="
-            relative
-            mx-auto
-            h-32
-            w-[90%]
-            overflow-hidden
-            rounded-lg
-            bg-black
-          "
-        >
-          <input
-            id="fileInput"
-            className={`hidden h-full w-full outline-none`}
-            type="file"
-            accept=".jpg,.png,.jpeg"
-            onChange={handleFileUpload}
-          />
-
-          <label htmlFor="fileInput">
-            <Camera
-              className="
-                absolute 
-                left-1/2 
-                top-1/2 
-                z-30 
-                h-20 
-                w-20 
-                -translate-x-1/2 
-                -translate-y-1/2 
-                cursor-pointer
-                text-white
-                transition-all
-                duration-500
-                hover:scale-150
-              "
-            />
-          </label>
-
-          {currentImageUrl && (
-            <Image
-              src={currentImageUrl}
-              alt="current image"
-              width={520}
-              height={320}
-              className="absolute z-10"
-            />
-          )}
-        </div>
+        <ImageUpload
+          onChange={(value) => setValue('image', value)}
+          value={image}
+        />
         <span>Descrição*</span>
         <input
           className={`${basicInputStyle}`}

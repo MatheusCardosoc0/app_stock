@@ -1,12 +1,15 @@
 import { ProductProps } from '@/@types/product'
 import CardProduct from '@/components/CardProduct'
 import NavFormButton from '@/components/NavFormButton'
-import { api } from '@/libs/axiosConfig'
 
 export default async function Home() {
-  const response = await api('/product')
+  const response = await fetch('https://backend-app-stock.vercel.app/product', {
+    next: {
+      revalidate: 1,
+    },
+  })
 
-  const products = await response.data
+  const products = await response.json()
 
   return (
     <main

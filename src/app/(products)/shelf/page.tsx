@@ -1,13 +1,16 @@
 import { ShelfProps } from '@/@types/shelf'
 import CardShelf from '@/components/CardShelf'
 import NavFormButton from '@/components/NavFormButton'
-import { api } from '@/libs/axiosConfig'
 import React from 'react'
 
 export default async function StockPage() {
-  const response = await api('/shelf')
+  const response = await fetch('https://backend-app-stock.vercel.app/shelf', {
+    next: {
+      revalidate: 0,
+    },
+  })
 
-  const shelf: ShelfProps[] = await response.data
+  const shelf: ShelfProps[] = await response.json()
 
   return (
     <main

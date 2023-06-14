@@ -5,7 +5,7 @@ import NavFormButton from '@/components/NavFormButton'
 export default async function Home() {
   const response = await fetch('https://backend-app-stock.vercel.app/product', {
     next: {
-      revalidate: 1,
+      revalidate: 0,
     },
   })
 

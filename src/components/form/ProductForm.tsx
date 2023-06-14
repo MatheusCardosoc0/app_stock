@@ -4,13 +4,8 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import { useCallback, useState } from 'react'
 import { api } from '@/libs/axiosConfig'
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
-import { Camera } from 'lucide-react'
-import { CldUploadWidget } from 'next-cloudinary'
-import result from 'postcss/lib/result'
 import ImageUpload from '../ImageUpload'
 
 const schema = z.object({

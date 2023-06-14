@@ -5,10 +5,6 @@ import Image from 'next/image'
 import { useCallback } from 'react'
 import { CameraIcon } from 'lucide-react'
 
-declare global {
-  var cloudinary: any
-}
-
 const uploadPreset = 'vnlyul9k'
 
 interface ImageUploadProps {

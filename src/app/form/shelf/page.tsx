@@ -1,14 +1,18 @@
+import { ProductProps } from '@/@types/product'
 import ShelfForm from '@/components/form/ShelfForm'
-import { api } from '@/libs/axiosConfig'
 
 const pageFormShelf = async () => {
-  const response = await api.get('/product')
+  const response = await fetch('https://backend-app-stock.vercel.app/product', {
+    next: {
+      revalidate: 0,
+    },
+  })
 
-  const products = response.data
+  const products = await response.json()
 
   return (
     <>
-      <ShelfForm products={products} />
+      <ShelfForm products={products as ProductProps[]} />
     </>
   )
 }

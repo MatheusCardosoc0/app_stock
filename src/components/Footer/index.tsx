@@ -18,11 +18,21 @@ const Footer = () => {
         text-white
       "
     >
-      <Link href={'/'}>
+      <Link
+        href={'/'}
+        className="flex flex-col items-center text-xs font-bold text-white"
+      >
         <Package2 className="h-8 w-8 hover:scale-125" />
+
+        <span>Produtos</span>
       </Link>
-      <Link href={'/shelf'}>
+      <Link
+        href={'/shelf'}
+        className="flex flex-col items-center text-xs font-bold text-white"
+      >
         <Boxes className="h-8 w-8 hover:scale-125" />
+
+        <span>Estante</span>
       </Link>
     </footer>
   )
